@@ -12,6 +12,7 @@ class BoxList extends Component {
         };
         this.addBox = this.addBox.bind(this);
         this.renderBoxes = this.renderBoxes.bind(this);
+        this.removeBox = this.removeBox.bind(this);
     }
     addBox(styling) {
         let newBox = { ...styling, id: uuidv4() };
@@ -19,10 +20,21 @@ class BoxList extends Component {
             boxes: [...state.boxes, newBox]
         }));
     }
+    removeBox(id) {
+        let newBoxes = this.state.boxes;
+        let idRemove = "";
+        for (let i = 0; i < this.state.boxes.length; i++) {
+            if (this.state.boxes[i].id === id) {
+                idRemove = i;
+            }
+        }
+        newBoxes.splice(idRemove, 1);
+        this.setState({ boxes: newBoxes });
+    }
     renderBoxes() {
         return (
             this.state.boxes.map(box => (
-                <Box styling={box} key={box.id} />
+                <Box styling={box} key={box.id} removeBox={this.removeBox} />
             ))
         )
     }
